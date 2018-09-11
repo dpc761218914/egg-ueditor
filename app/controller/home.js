@@ -8,6 +8,8 @@ const fs = require('fs');
 const ueditor = require('ueditor');
 var crypto = require('crypto'); // 加密库
 
+let  join = require('path').join;
+
 function md5(str) {
   var ret = crypto.createHash('md5').update(str.toString()).digest("hex");
   return ret;
@@ -18,7 +20,7 @@ class HomeController extends Controller {
     await this.ctx.render('news/ueditor.tpl');
   }
 
-  async uploadsImg(){
+  async uploadsImg() {
     //客户端上传文件设置
     let imgDir = '../public/img/ueditor/';
     console.log('upload img');
@@ -47,7 +49,7 @@ class HomeController extends Controller {
 
   };
 
-  async uploadsImgPOST(){
+  async uploadsImgPOST() {
 
     //客户端上传文件设置
     const stream = await this.ctx.getFileStream();
@@ -73,7 +75,7 @@ class HomeController extends Controller {
         const filename = md5(parts) + path.extname(stream.filename).toLowerCase();
         const target = path.join(__dirname, file_url, filename);
         await fs.writeFileSync(target, buf);
-        return this.ctx.body = { url: file_url.slice(2) + filename ,state: 'SUCCESS'};
+        return this.ctx.body = {url: file_url.slice(2) + filename, state: 'SUCCESS'};
       }
       // 客户端发起其它请求
       else {
@@ -85,6 +87,27 @@ class HomeController extends Controller {
     }
   };
 
+
+
+
+  async uploadHtml() {
+
+    let body = this.ctx.request.body;
+    let content = body.content;
+    console.log("content=====" + content);
+
+    //删除所有文件夹中，conetent中没有用到过的图片资源
+    this.ctx.service.file.findSync('../egg-ueditor/app/public/img/ueditor/',content);
+
+    console.log('fileNames==='+fileNames[0]);
+
+
+  };
+
+
 }
+
+
+
 
 module.exports = HomeController;

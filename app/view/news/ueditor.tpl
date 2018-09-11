@@ -41,6 +41,10 @@
         <button onclick=" UE.getEditor('editor').setHide()">隐藏编辑器</button>
         <button onclick=" UE.getEditor('editor').setShow()">显示编辑器</button>
     </div>
+    <div>
+
+     <button onclick="uploadHtml()"><strong>提交富文本内容</strong></button>
+    </div>
 
 </div>
 <div>
@@ -67,6 +71,15 @@
     autoHeightEnabled: true,
     autoFloatEnabled: true
 });
+
+   function uploadHtml() {
+     var content= UE.getEditor('editor').getContent();
+
+     $.post("http://localhost:7001/uploadHtml",{content:content},function(result){
+       alert(content)
+     });
+        //alert(UE.getEditor('editor').getContent())
+    }
      function isFocus(e){
         alert(UE.getEditor('editor').isFocus());
         UE.dom.domUtils.preventDefault(e)

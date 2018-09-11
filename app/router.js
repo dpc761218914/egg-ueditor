@@ -10,4 +10,6 @@ module.exports = app => {
   router.get('/public/ueditor/ue',controller.home.uploadsImg);
   router.post('/public/ueditor/ue',controller.home.uploadsImgPOST);
 
+  router.post('/uploadHtml',controller.home.uploadHtml);
+
 };
